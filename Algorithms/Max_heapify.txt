@@ -1,0 +1,42 @@
+#include <cmath>
+#include <cstdio>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+void swap(int *a,int child,int parent){
+    int temp;
+    temp=a[child];
+    a[child]=a[parent];
+    a[parent]=temp;
+}
+
+void max_heapify(int *a,int n,int length){
+    int left = 2*n;
+    int right = 2*n+1;
+    if(a[right]>a[n]&&a[right]>a[left]&&right<length){
+        swap(a,right,n);
+        max_heapify(a,right,length);
+    }
+    else if(a[left]>a[n]&&a[left]>a[right]&&left<length){
+        swap(a,left,n);
+        max_heapify(a,left,length);
+    }
+    
+}
+int main() {
+    /* Enter your code here. Read input from STDIN. Print output to STDOUT */
+    int i,a[100],length;
+    cin>>length;
+    for(i=1;i<=length;i++){
+        cin>>a[i];
+    }
+    for(i=length/2;i>0;i--){                          //Building a max heap.
+        max_heapify(a,i,length);
+    }
+    for(i=1;i<=length;i++){
+        cout<<a[i];
+    }
+    return 0;
+}
