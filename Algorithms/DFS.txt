@@ -1,0 +1,86 @@
+#include <map>
+#include <set>
+#include <list>
+#include <cmath>
+#include <ctime>
+#include <deque>
+#include <queue>
+#include <stack>
+#include <string>
+#include <bitset>
+#include <cstdio>
+#include <limits>
+#include <vector>
+#include <climits>
+#include <cstring>
+#include <cstdlib>
+#include <fstream>
+#include <numeric>
+#include <sstream>
+#include <iostream>
+#include <algorithm>
+#include <unordered_map>
+
+using namespace std;
+
+//Graph class represents a directed graph using a adjancency list.
+class Graph{
+    int v;    //No. of vertices.
+    list<int> *adj;   //Pointer to an array containing adjacency list
+    void DFSUtil(int v,bool visited[]);  //A function used by DFS.
+    public:
+    Graph(int v);  //Constructor.
+    void addEdge(int v,int w);  //function to add edge to the graph.
+    void DFS(int v);  //DFS travelsal of vertices reachable from v.
+};
+
+Graph::Graph(int v){
+    this->v = v;
+    adj = new list<int>[v];
+}
+
+void Graph::addEdge(int v,int w){
+    adj[v].push_back(w); //Add w to v's list.
+}
+
+void Graph::DFSUtil(int v,bool visited[]){
+    //Mark the current node visited and print it.
+    visited[v] = true;
+    cout<<v<<" ";
+    //Recur for all the vertices adjacent to this vertex.
+    list<int>::iterator i;
+    for( i= adj[v].begin();i!=adj[v].end();i++){
+        if(!visited[*i]){
+            DFSUtil(*i,visited);
+        }
+    }
+}
+
+//DFS traversal of vertices reachable from v.
+//It is uses recursive DFSUtil.
+void Graph::DFS(int v){
+    //Mark all the nodes not visited.
+    bool *visited = new bool[v];
+    for(int i=0;i<v;i++){
+        visited[i] = false;
+    }
+    
+    //Call the recursive helper function to print DFS travelsal.
+    //Starting from all the vertices one by one.
+    for(int i=0;i<v;i++){
+        if(visited[i]==false)
+              DFSUtil(v,visited);
+    }
+}
+
+int main(){
+    Graph g(4);
+    g.addEdge(0,1);
+    g.addEdge(0,2);
+    g.addEdge(1,2);
+    g.addEdge(2,0);
+    g.addEdge(2,3);
+    g.addEdge(3,3);
+    cout<<"The following is the depth traversal starting from vertex 2";
+    g.DFS(2);
+}
